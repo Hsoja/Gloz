@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regístrate - Interior Insights</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Este es el contenedor para las imágenes de fondo -->
+    <div class="background-images">
+        <img src="img/bathroom-6686057_1280.jpg" alt="">
+        <img src="img/bedroom-416062_1280.jpg" alt="">
+        <img src="img/castle-7254622_1280.jpg" alt="">
+        <img src="img/house-1477041_1280.jpg" alt="">
+        <img src="img/pexels-candanaydin-11289592.jpg" alt="">
+        <img src="img/pexels-gb-the-green-brand-1259697174-31311141.jpg" alt="">
+        <img src="img/bedroom-416062_1280.jpg" alt="">
+        <img src="img/castle-7254622_1280.jpg" alt="">
+    </div>
+
+    <!-- Este es el contenedor principal que centra el formulario -->
+    <div class="container">
+        <div class="form-container">
+            <h1 class="logo">GLOZ</h1>
+            <p class="subtitle">Crea tu cuenta gratis</p>
+
+            <form action="#" method="POST" class="register-form">
+                <div class="input-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" name="email" placeholder="tu-correo@ejemplo.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="username">Nombre de usuario</label>
+                    <input type="text" id="username" name="username" placeholder="Elige un nombre de usuario" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required>
+                </div>
+                <div class="input-group">
+                    <label for="country">País</label>
+                    <select id="country" name="country">
+                        <option value="">Selecciona tu país</option>
+                        <option value="MX">México</option>
+                        <option value="ES">España</option>
+                        <option value="CO">Colombia</option>
+                    </select>
+                </div>
+                
+                <div class="newsletter-option">
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    <label for="newsletter">Quiero recibir ideas de diseño y ofertas por correo electrónico.</label>
+                </div>
+
+                <button type="submit" class="btn primary-btn">Crear cuenta</button>
+            </form>
+
+            <p class="login-link">
+                ¿Ya tienes una cuenta? <a href="index.html">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+
