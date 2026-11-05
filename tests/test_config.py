@@ -48,3 +48,17 @@ def test_defaults_to_production(monkeypatch):
     assert loaded.is_production
     assert loaded.secure_cookies
     assert loaded.session_cookie_name.startswith("__Host-")
+
+
+def test_dotenv_ignores_empty_template_lines(tmp_path, monkeypatch):
+    from app import config
+
+    env_file = tmp_path / ".env"
+    env_file.write_text("SECRET_KEY=\nIP_HASH_SALT=\nSECRET_KEY=" + "a" * 40 + "\nIP_HASH_SALT=" + "b" * 20 + "\n")
+    monkeypatch.delenv("SECRET_KEY", raising=False)
+    monkeypatch.delenv("IP_HASH_SALT", raising=False)
+    config._load_dotenv(env_file)
+    import os
+
+    assert os.environ["SECRET_KEY"] == "a" * 40
+    assert os.environ["IP_HASH_SALT"] == "b" * 20

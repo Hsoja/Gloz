@@ -23,12 +23,17 @@ def _load_dotenv(path: Path) -> None:
     """Load KEY=VALUE pairs from a local .env file without overriding real env vars."""
     if not path.is_file():
         return
+    values: dict[str, str] = {}
     for raw in path.read_text(encoding="utf-8").splitlines():
         line = raw.strip()
         if not line or line.startswith("#") or "=" not in line:
             continue
         key, value = line.split("=", 1)
-        os.environ.setdefault(key.strip(), value.strip().strip('"').strip("'"))
+        value = value.strip().strip('"').strip("'")
+        if value:  # empty template lines never override a value given later in the file
+            values[key.strip()] = value
+    for key, value in values.items():
+        os.environ.setdefault(key, value)
 
 
 def _int(name: str, default: int, minimum: int = 1) -> int:
