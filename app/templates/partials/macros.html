@@ -1,0 +1,65 @@
+{% macro picture(listing, sizes="(min-width: 960px) 33vw, 100vw", eager=false) -%}
+<img
+  src="{{ url_for('static', filename='img/listings/' ~ listing.image ~ '-800.jpg') }}"
+  srcset="{{ url_for('static', filename='img/listings/' ~ listing.image ~ '-800.jpg') }} 800w, {{ url_for('static', filename='img/listings/' ~ listing.image ~ '-1600.jpg') }} 1600w"
+  sizes="{{ sizes }}"
+  alt="{{ listing.alt }}"
+  width="800" height="600"
+  {% if eager %}fetchpriority="high"{% else %}loading="lazy"{% endif %}
+  decoding="async">
+{%- endmacro %}
+
+{% macro specs(listing) -%}
+<ul class="specs" aria-label="Key details">
+  <li><svg class="icon" aria-hidden="true"><use href="#i-bed"></use></svg>{% if listing.beds == 0 %}Studio{% else %}{{ listing.beds }} bed{{ 's' if listing.beds != 1 }}{% endif %}</li>
+  <li><svg class="icon" aria-hidden="true"><use href="#i-bath"></use></svg>{{ listing.baths_label }} bath{{ 's' if listing.baths != 1 }}</li>
+  <li><svg class="icon" aria-hidden="true"><use href="#i-area"></use></svg>{{ "{:,}".format(listing.sqft) }} sq ft</li>
+</ul>
+{%- endmacro %}
+
+{% macro listing_card(listing, heading="h3") -%}
+<article class="home-card">
+  <a class="home-card-link" href="{{ url_for('main.listing_detail', listing_id=listing.id) }}">
+    <div class="home-card-media">
+      {{ picture(listing) }}
+      <span class="deal-tag deal-{{ listing.deal }}">For {{ listing.deal }}</span>
+    </div>
+    <div class="home-card-body">
+      <p class="price">{{ listing.price_label }}</p>
+      <{{ heading }} class="home-card-title">{{ listing.title }}</{{ heading }}>
+      <p class="place"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg>{{ listing.area }}, {{ listing.city }}</p>
+      {{ specs(listing) }}
+    </div>
+  </a>
+</article>
+{%- endmacro %}
+
+{% macro field(name, label, type="text", value="", errors={}, autocomplete="", hint="", required=true, maxlength=None, minlength=None) -%}
+{% set err = errors.get(name) %}
+<div class="field{% if err %} has-error{% endif %}">
+  <label for="{{ name }}">{{ label }}</label>
+  {% if type == "password" %}
+  <div class="password-wrap">
+    <input id="{{ name }}" name="{{ name }}" type="password"
+      {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+      {% if required %}required{% endif %}
+      {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+      {% if minlength %}minlength="{{ minlength }}"{% endif %}
+      {% if hint or err %}aria-describedby="{% if hint %}{{ name }}-hint {% endif %}{% if err %}{{ name }}-error{% endif %}"{% endif %}
+      {% if err %}aria-invalid="true"{% endif %}>
+    <button type="button" class="reveal" data-reveal="{{ name }}" aria-pressed="false">
+      <svg class="icon" aria-hidden="true"><use href="#i-eye"></use></svg><span class="visually-hidden">Show password</span>
+    </button>
+  </div>
+  {% else %}
+  <input id="{{ name }}" name="{{ name }}" type="{{ type }}" value="{{ value }}"
+    {% if autocomplete %}autocomplete="{{ autocomplete }}"{% endif %}
+    {% if required %}required{% endif %}
+    {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+    {% if hint or err %}aria-describedby="{% if hint %}{{ name }}-hint {% endif %}{% if err %}{{ name }}-error{% endif %}"{% endif %}
+    {% if err %}aria-invalid="true"{% endif %}>
+  {% endif %}
+  {% if hint %}<p class="hint" id="{{ name }}-hint">{{ hint }}</p>{% endif %}
+  {% if err %}<p class="error-text" id="{{ name }}-error">{{ err }}</p>{% endif %}
+</div>
+{%- endmacro %}

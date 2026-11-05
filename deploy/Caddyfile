@@ -1,0 +1,16 @@
+# Example HTTPS reverse proxy. Replace the domain with your own.
+# Caddy obtains and renews the TLS certificate automatically.
+gloz.example.com {
+	encode zstd gzip
+
+	# Never serve hidden files, even by mistake.
+	@hidden path /.* /*/.*
+	respond @hidden 404
+
+	reverse_proxy 127.0.0.1:8000
+
+	header {
+		-Server
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+	}
+}

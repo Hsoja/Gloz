@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import picture, specs, listing_card %}
+{% block title %}{{ listing.title }}{% endblock %}
+{% block description %}{{ listing.summary }}{% endblock %}
+
+{% block content %}
+<div class="shell detail">
+  <a class="back-link" href="{{ url_for('main.listings', deal=listing.deal) }}">
+    <svg class="icon" aria-hidden="true"><use href="#i-back"></use></svg>Homes for {{ listing.deal }}
+  </a>
+
+  <div class="detail-grid">
+    <div class="detail-media">
+      {{ picture(listing, sizes="(min-width: 960px) 60vw, 100vw", eager=true) }}
+    </div>
+
+    <aside class="detail-panel" aria-labelledby="listing-title">
+      <span class="deal-tag deal-{{ listing.deal }}">For {{ listing.deal }}</span>
+      <h1 id="listing-title" class="title-lg">{{ listing.title }}</h1>
+      <p class="place"><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg>{{ listing.area }}, {{ listing.city }}</p>
+      <p class="price price-lg">{{ listing.price_label }}</p>
+      {{ specs(listing) }}
+
+      {% if g.user %}
+      <form method="post" action="{{ url_for('auth.toggle_save', listing_id=listing.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        {% if is_saved %}
+        <button class="btn btn-outline btn-block" type="submit" aria-pressed="true">
+          <svg class="icon" aria-hidden="true"><use href="#i-heart-fill"></use></svg>Saved. Remove from list
+        </button>
+        {% else %}
+        <button class="btn btn-primary btn-block" type="submit" aria-pressed="false">
+          <svg class="icon" aria-hidden="true"><use href="#i-heart"></use></svg>Save this home
+        </button>
+        {% endif %}
+      </form>
+      {% else %}
+      <a class="btn btn-primary btn-block" href="{{ url_for('auth.login') }}">
+        <svg class="icon" aria-hidden="true"><use href="#i-heart"></use></svg>Log in to save this home
+      </a>
+      {% endif %}
+      <p class="sample-note">Sample listing for demonstration. This home isn't real.</p>
+    </aside>
+  </div>
+
+  <div class="detail-body">
+    <section aria-labelledby="about-home">
+      <h2 id="about-home" class="title">About this home</h2>
+      <p class="prose">{{ listing.summary }}</p>
+    </section>
+    <section aria-labelledby="features">
+      <h2 id="features" class="title">Features</h2>
+      <ul class="feature-list">
+        {% for feature in listing.features %}
+        <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>{{ feature }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    <section aria-labelledby="facts">
+      <h2 id="facts" class="title">Fact sheet</h2>
+      <dl class="facts">
+        <div><dt>Type</dt><dd>{{ listing.kind }}</dd></div>
+        <div><dt>Bedrooms</dt><dd>{{ listing.beds if listing.beds else 'Studio' }}</dd></div>
+        <div><dt>Bathrooms</dt><dd>{{ listing.baths_label }}</dd></div>
+        <div><dt>Interior</dt><dd>{{ "{:,}".format(listing.sqft) }} sq ft</dd></div>
+        <div><dt>{{ 'Monthly rent' if listing.deal == 'rent' else 'Asking price' }}</dt><dd>{{ listing.price_label }}</dd></div>
+      </dl>
+    </section>
+  </div>
+
+  {% if similar %}
+  <section class="section-flush" aria-labelledby="similar-heading">
+    <h2 id="similar-heading" class="title">More in {{ listing.city }}</h2>
+    <div class="card-grid">
+      {% for item in similar %}{{ listing_card(item) }}{% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</div>
+{% endblock %}

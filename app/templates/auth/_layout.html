@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block body_class %}page-auth{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-visual" aria-hidden="true">
+    <img src="{{ url_for('static', filename='img/listings/' ~ (auth_image or 'valley-view-suite') ~ '-1600.jpg') }}" alt="" width="1600" height="1067">
+    <div class="auth-grid"></div>
+  </div>
+  <div class="auth-card">
+    {% block auth_body %}{% endblock %}
+  </div>
+</div>
+{% endblock %}

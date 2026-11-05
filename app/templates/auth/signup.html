@@ -1,0 +1,23 @@
+{% extends "auth/_layout.html" %}
+{% from "partials/macros.html" import field %}
+{% set auth_image = "cedar-townhouse" %}
+{% block title %}Create an account{% endblock %}
+
+{% block auth_body %}
+<h1 class="title-lg">Create your account</h1>
+<p class="muted">Save homes and compare them from any device. Free, and you can delete it any time.</p>
+
+{% if errors.get('form') %}<p class="form-error" role="alert">{{ errors['form'] }}</p>{% endif %}
+
+<form method="post" action="{{ url_for('auth.signup') }}" class="stack" novalidate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {{ field("display_name", "Your name", value=values.display_name, errors=errors, autocomplete="given-name", maxlength=60) }}
+  {{ field("email", "Email", type="email", value=values.email, errors=errors, autocomplete="email", maxlength=254) }}
+  {{ field("password", "Password", type="password", errors=errors, autocomplete="new-password", hint="At least 12 characters. A short phrase works well.", maxlength=128, minlength=12) }}
+  {{ field("password_confirm", "Confirm password", type="password", errors=errors, autocomplete="new-password", maxlength=128) }}
+  <p class="fine-print">By creating an account you agree to the <a href="{{ url_for('main.terms') }}">terms</a> and the <a href="{{ url_for('main.privacy') }}">privacy policy</a>.</p>
+  <button class="btn btn-primary btn-block" type="submit">Create account</button>
+</form>
+
+<p class="switch">Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+{% endblock %}

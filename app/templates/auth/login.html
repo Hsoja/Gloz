@@ -1,0 +1,20 @@
+{% extends "auth/_layout.html" %}
+{% from "partials/macros.html" import field %}
+{% set auth_image = "valley-view-suite" %}
+{% block title %}Log in{% endblock %}
+
+{% block auth_body %}
+<h1 class="title-lg">Log in</h1>
+<p class="muted">Welcome back. Your saved homes are waiting.</p>
+
+{% if errors.get('form') %}<p class="form-error" role="alert">{{ errors['form'] }}</p>{% endif %}
+
+<form method="post" action="{{ url_for('auth.login') }}" class="stack" novalidate>
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {{ field("email", "Email", type="email", value=email, autocomplete="email", maxlength=254) }}
+  {{ field("password", "Password", type="password", autocomplete="current-password", maxlength=128) }}
+  <button class="btn btn-primary btn-block" type="submit">Log in</button>
+</form>
+
+<p class="switch">New to Gloz? <a href="{{ url_for('auth.signup') }}">Create an account</a></p>
+{% endblock %}
