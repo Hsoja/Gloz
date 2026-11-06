@@ -8,8 +8,8 @@
 
 | Check | Result | Notes |
 | --- | --- | --- |
-| `pytest` (63 tests) | ✅ Pass | Includes abuse cases: no session, CSRF missing/wrong/cross-origin, XSS, SQLi, 413, 429, lockout, route allow-list |
-| `pip-audit -r requirements.lock` | ✅ No known vulnerabilities | |
+| `pytest` (64 tests) | ✅ Pass | Includes abuse cases: no session, CSRF missing/wrong/cross-origin, XSS, SQLi, 413, 429, lockout, route allow-list |
+| `pip-audit -r requirements-lock.txt` | ✅ No known vulnerabilities | |
 | `bandit --severity-level medium` | ✅ No findings | 5 low-severity B105 false positives: user-facing messages containing the word "password" |
 | `semgrep` | ✅ 0 findings | Run locally with 362 rules from the official `semgrep-rules` repository (Flask, Python security, secrets). The registry packs `p/python`, `p/flask`, `p/secrets` could not be downloaded from this environment; CI runs them |
 | `gitleaks` (full history, 3 previous commits + working tree) | ✅ No leaks | |

@@ -33,7 +33,7 @@ Gloz lets people browse houses, condos and lofts for sale or rent in Waterloo, K
 | Database | SQLite (parameterized queries only) |
 | Auth | Argon2id (`argon2-cffi`), hashed server-side session tokens, double-submit CSRF tokens |
 | Frontend | Semantic HTML, custom CSS (no framework), vanilla JavaScript, self-hosted variable fonts |
-| Testing & QA | pytest (62 tests), Bandit, pip-audit, Semgrep, Gitleaks, Playwright (manual browser checks) |
+| Testing & QA | pytest (64 tests), Bandit, pip-audit, Semgrep, Gitleaks, Playwright (manual browser checks) |
 | CI | GitHub Actions with pinned action SHAs and read-only permissions, Dependabot |
 | Deploy | Gunicorn behind Caddy (automatic HTTPS) |
 
@@ -64,7 +64,7 @@ gloz/
 ├── run.py                   Local development server
 ├── wsgi.py                  Production entry point for Gunicorn
 ├── requirements.txt         Direct dependencies
-├── requirements.lock        Exact pinned versions
+├── requirements-lock.txt    Exact pinned versions
 ├── requirements-dev.txt     Test and audit tools
 ├── .env.example             Template for local configuration (no real values)
 └── SECURITY_REPORT.md       Latest audit results and findings
@@ -115,8 +115,8 @@ A deeper walkthrough of how a request flows through these modules is in [docs/AR
 ## Tests and security checks
 
 ```bash
-python -m pytest                                         # 62 tests
-pip-audit -r requirements.lock                           # known vulnerabilities in dependencies
+python -m pytest                                         # 64 tests
+pip-audit -r requirements-lock.txt                       # known vulnerabilities in dependencies
 bandit -q -r app wsgi.py run.py --severity-level medium  # Python security linter
 bash scripts/scan_exposed_files.sh                       # no secrets or data files tracked by Git
 gitleaks git . --log-opts=--all --redact=100             # secrets in the full Git history

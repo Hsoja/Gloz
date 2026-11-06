@@ -1,4 +1,4 @@
--r requirements.lock
+-r requirements-lock.txt
 pytest>=8,<10
 bandit>=1.8,<2
 pip-audit>=2.9,<3
