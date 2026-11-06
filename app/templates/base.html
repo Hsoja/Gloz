@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Gloz{% endblock %} | Gloz Homes</title>
+  <meta name="description" content="{% block description %}Browse homes for sale and rent in Waterloo, Kitchener, Guelph and Toronto, and save the ones you like.{% endblock %}">
+  <meta name="theme-color" content="#0F3B82">
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <link rel="preload" href="{{ url_for('static', filename='fonts/bricolage-grotesque-latin-standard-normal.woff2') }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/gloz.css') }}">
+  <script src="{{ url_for('static', filename='js/gloz.js') }}" defer></script>
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  {% include "partials/icons.html" %}
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="shell header-row">
+      <a class="brand" href="{{ url_for('main.index') }}" aria-label="Gloz home">
+        <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#logo-mark"></use></svg>
+        <span class="brand-word">Gloz</span>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" data-nav-toggle>
+        <svg class="icon" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <span class="visually-hidden">Menu</span>
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="Main">
+        {% set ep = request.endpoint %}
+        <a href="{{ url_for('main.listings', deal='sale') }}" {% if ep == 'main.listings' and request.args.get('deal') == 'sale' %}aria-current="page"{% endif %}>Buy</a>
+        <a href="{{ url_for('main.listings', deal='rent') }}" {% if ep == 'main.listings' and request.args.get('deal') == 'rent' %}aria-current="page"{% endif %}>Rent</a>
+        <a href="{{ url_for('main.listings') }}" {% if ep == 'main.listings' and not request.args.get('deal') %}aria-current="page"{% endif %}>All homes</a>
+        <a href="{{ url_for('main.about') }}" {% if ep == 'main.about' %}aria-current="page"{% endif %}>About</a>
+        <span class="nav-divider" aria-hidden="true"></span>
+        {% if g.user %}
+          <a class="nav-account" href="{{ url_for('auth.account') }}" {% if ep == 'auth.account' %}aria-current="page"{% endif %}>
+            <svg class="icon" aria-hidden="true"><use href="#i-user"></use></svg>{{ g.user['display_name'] }}
+          </a>
+          <form method="post" action="{{ url_for('auth.logout') }}" class="inline-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-quiet">Log out</button>
+          </form>
+        {% else %}
+          <a href="{{ url_for('auth.login') }}" {% if ep == 'auth.login' %}aria-current="page"{% endif %}>Log in</a>
+          <a class="btn btn-primary btn-small" href="{{ url_for('auth.signup') }}">Create account</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="shell flash-stack" role="status" aria-live="polite">
+        {% for category, message in messages %}
+          <p class="flash flash-{{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main id="main" tabindex="-1">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-grid">
+      <div class="footer-brand">
+        <a class="brand brand-light" href="{{ url_for('main.index') }}" aria-label="Gloz home">
+          <svg class="brand-mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#logo-mark"></use></svg>
+          <span class="brand-word">Gloz</span>
+        </a>
+        <p>Homes in Waterloo Region, Guelph and Toronto, laid out clearly so you can compare them side by side.</p>
+      </div>
+      <nav aria-label="Browse">
+        <h2 class="footer-heading">Browse</h2>
+        <a href="{{ url_for('main.listings', deal='sale') }}">Homes for sale</a>
+        <a href="{{ url_for('main.listings', deal='rent') }}">Homes for rent</a>
+        <a href="{{ url_for('main.listings', sort='price_asc') }}">Lowest price first</a>
+      </nav>
+      <nav aria-label="Gloz">
+        <h2 class="footer-heading">Gloz</h2>
+        <a href="{{ url_for('main.about') }}">About this project</a>
+        <a href="{{ url_for('main.privacy') }}">Privacy</a>
+        <a href="{{ url_for('main.terms') }}">Terms</a>
+      </nav>
+    </div>
+    <div class="shell footer-note">
+      <p>Portfolio project. Every listing on this site is fictional sample content, and no property is actually for sale or rent.</p>
+      <p>&copy; 2026 Gloz</p>
+    </div>
+  </footer>
+</body>
+</html>

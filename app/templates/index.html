@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import listing_card, picture %}
+{% block title %}Homes for sale and rent{% endblock %}
+{% block body_class %}page-home{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="shell hero-grid">
+    <div class="hero-copy">
+      <h1 class="display">Every home, drawn up clearly.</h1>
+      <p class="lede">Compare houses, condos and lofts in Waterloo Region, Guelph and Toronto by the details that matter: rooms, size, price and neighbourhood.</p>
+
+      <form class="search-panel" method="get" action="{{ url_for('main.listings') }}" role="search" aria-label="Search homes">
+        <div class="search-field search-field-wide">
+          <label for="hero-q">Neighbourhood or name</label>
+          <input id="hero-q" name="q" type="search" maxlength="60" placeholder="Uptown, King West, Old Mill">
+        </div>
+        <div class="search-field">
+          <label for="hero-deal">Looking to</label>
+          <select id="hero-deal" name="deal">
+            <option value="">Buy or rent</option>
+            <option value="sale">Buy</option>
+            <option value="rent">Rent</option>
+          </select>
+        </div>
+        <div class="search-field">
+          <label for="hero-city">City</label>
+          <select id="hero-city" name="city">
+            <option value="">Any city</option>
+            {% for city in cities %}<option value="{{ city }}">{{ city }}</option>{% endfor %}
+          </select>
+        </div>
+        <button class="btn btn-primary search-submit" type="submit">
+          <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>Search homes
+        </button>
+      </form>
+    </div>
+
+    <figure class="hero-visual">
+      <div class="hero-photo">
+        <img src="{{ url_for('static', filename='img/listings/pavilion-house-1600.jpg') }}"
+             srcset="{{ url_for('static', filename='img/listings/pavilion-house-800.jpg') }} 800w, {{ url_for('static', filename='img/listings/pavilion-house-1600.jpg') }} 1600w"
+             sizes="(min-width: 960px) 50vw, 100vw"
+             alt="Modern two-storey house with floor-to-ceiling windows and a lit pool at dusk"
+             width="1600" height="900" fetchpriority="high">
+      </div>
+      <svg class="plan" viewBox="0 0 320 240" aria-hidden="true">
+        <g class="plan-walls">
+          <path pathLength="1" d="M20 20H300V220H20Z"/>
+          <path pathLength="1" d="M20 120H140M180 120H300"/>
+          <path pathLength="1" d="M140 20V90M140 150V220"/>
+          <path pathLength="1" d="M220 120V220"/>
+        </g>
+        <g class="plan-details">
+          <path pathLength="1" d="M140 90a30 30 0 0 1 30 30"/>
+          <path pathLength="1" d="M180 120a24 24 0 0 0-24 24"/>
+          <path pathLength="1" d="M20 236H300M20 232v8M300 232v8"/>
+          <path pathLength="1" d="M236 20H284V44H236Z"/>
+        </g>
+        <g class="plan-labels">
+          <text x="80" y="74">Living</text>
+          <text x="220" y="74">Kitchen</text>
+          <text x="80" y="174">Primary</text>
+          <text x="180" y="174">Bath</text>
+          <text x="260" y="174">Bed 2</text>
+        </g>
+      </svg>
+      <figcaption class="hero-caption">
+        <a href="{{ url_for('main.listing_detail', listing_id='pavilion-house') }}">The Pavilion House</a>
+        <span>4 bed, 3,200 sq ft, Waterloo</span>
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="featured-heading">
+  <div class="shell">
+    <div class="section-head">
+      <h2 id="featured-heading" class="title">Featured this week</h2>
+      <a class="text-link" href="{{ url_for('main.listings') }}">See all {{ total }} homes</a>
+    </div>
+    <div class="card-grid">
+      {% for listing in featured %}{{ listing_card(listing) }}{% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section section-tint" aria-labelledby="how-heading">
+  <div class="shell how">
+    <h2 id="how-heading" class="title">How Gloz works</h2>
+    <ol class="steps">
+      <li>
+        <h3>Search with real filters</h3>
+        <p>Narrow by city, home type, bedrooms and budget. Results update on the server, so the link you share shows the same homes.</p>
+      </li>
+      <li>
+        <h3>Save the ones you like</h3>
+        <p>Create a free account and save homes with one click. Your list follows you to any device.</p>
+      </li>
+      <li>
+        <h3>Compare from your account</h3>
+        <p>See every saved home side by side with its price, size and rooms, and remove the ones that no longer fit.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="section" aria-labelledby="cities-heading">
+  <div class="shell">
+    <h2 id="cities-heading" class="title">Browse by city</h2>
+    <ul class="city-list">
+      {% for city in cities %}
+      <li><a href="{{ url_for('main.listings', city=city) }}"><span>{{ city }}</span><svg class="icon" aria-hidden="true"><use href="#i-pin"></use></svg></a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+
+{% if not g.user %}
+<section class="cta-band" aria-labelledby="cta-heading">
+  <div class="shell cta-inner">
+    <div>
+      <h2 id="cta-heading" class="title">Keep a shortlist</h2>
+      <p>An account only needs an email and a password. You can delete it, and everything you saved, at any time.</p>
+    </div>
+    <a class="btn btn-light" href="{{ url_for('auth.signup') }}">Create a free account</a>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

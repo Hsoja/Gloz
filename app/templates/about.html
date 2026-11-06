@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="shell">
+    <h1 class="title-lg">About Gloz</h1>
+    <p class="lede">Gloz is a portfolio project: a property listings site built with Flask, designed to show a complete, secure web app from the database to the page.</p>
+  </div>
+</section>
+
+<div class="shell about">
+  <section class="about-block">
+    <h2 class="title">What it does</h2>
+    <ul class="feature-list">
+      <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Search homes by city, type, bedrooms and price, filtered on the server</li>
+      <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Create an account and save homes to compare them later</li>
+      <li><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg>Change your password or delete your account and data at any time</li>
+    </ul>
+  </section>
+  <section class="about-block">
+    <h2 class="title">How it protects you</h2>
+    <ul class="feature-list">
+      <li><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Passwords hashed with Argon2id, never stored or logged in plain text</li>
+      <li><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Session cookies that scripts can't read, with CSRF protection on every form</li>
+      <li><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>Rate limits and a temporary lock after repeated failed log-ins</li>
+      <li><svg class="icon" aria-hidden="true"><use href="#i-shield"></use></svg>A strict Content Security Policy, with no third-party scripts, fonts or trackers</li>
+    </ul>
+  </section>
+  <section class="about-block">
+    <h2 class="title">About the listings</h2>
+    <p class="prose">Every home on Gloz is fictional. Names, prices and descriptions were written for this demo, and the photos are free stock images from Unsplash, Pexels and Pixabay.</p>
+  </section>
+</div>
+{% endblock %}
