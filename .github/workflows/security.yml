@@ -18,7 +18,7 @@ jobs:
           python-version: "3.13"
       - run: pip install -r requirements-dev.txt
       - run: python -m pytest
-      - run: pip-audit -r requirements.lock
+      - run: pip-audit -r requirements-lock.txt
       - run: bandit -q -r app wsgi.py run.py --severity-level medium
       - run: bash scripts/scan_exposed_files.sh
 

@@ -8,7 +8,7 @@ A minimal production setup on a Linux server: Gunicorn serves the app on localho
 git clone https://github.com/Hsoja/Gloz.git /opt/gloz
 cd /opt/gloz
 python3 -m venv .venv
-.venv/bin/pip install -r requirements.lock
+.venv/bin/pip install -r requirements-lock.txt
 ```
 
 ## 2. Configure
